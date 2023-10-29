@@ -21,7 +21,9 @@ int main() {
 //        cout << "can't open video" << endl;
 //        return false;
 //    }
+
     cv::Mat img;
+
 //    while (video.read(img)){
 //        if (img.empty())
 //            break;
@@ -33,7 +35,6 @@ int main() {
     h.SetExposureTime(5000);
     h.SetFrameRate(120);
     h.SetStreamOn();//开始取流
-
     while (1) {
         h.GetMat(img);
 

@@ -58,11 +58,17 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
     cv::Mat rvec ;          //旋转向量
     cv::Mat tvec ;          //平移向量
 
+    Serial s;
+    s.open();
+    thread s1(&Serial::recieve,&s);
+    s1.detach();
+    detect_color = (s.re_color=='R')?0:1;
+
+
     PnPSolver m(camera_matrix,dist_coeffs);
     for(const auto armors : armors_){
 
         m.solvePnP(armors,rvec,tvec);
-        cv::Point3f point_3D;
         double yaw;                // 侧航角（x/z）
         double pitch;              // 俯仰角（y/z）
         double distance;           // 距离
@@ -72,12 +78,9 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
         distance = sqrt(x*x + y*y + z*z);
 
 //----------------------弹道补偿-------------------------------------------------------------------------------
-        Serial s;
-        s.open();
-        s.recieve();
-        thread s1(&Serial::recieve,&s);
-        s1.join();
+
         double new_pitch = increase(s.re_speed,pitch,distance);
+//        s.recieve();
 //        double  new_pitch = increase(20,pitch,distance);
         double raise;
         if(new_pitch<0){
@@ -89,11 +92,10 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
 
 //----------------------发送串口-------------------------------------------------------------------------------
 
-        double SendYaw = yaw + s.re_yaw;
-        double SendPitch = new_pitch + s.re_pitch;
-        msg = s.data_send(SendYaw,SendPitch);
-        thread s2(&Serial::send,&s,msg);
-        s2.join();
+//        double SendYaw = yaw + s.re_yaw;
+//        double SendPitch = new_pitch + s.re_pitch;
+        msg = s.data_send(yaw,new_pitch);
+
 //---------------------for debug---------------------------------------------------------------------------------------
         std::string X("x : ");
         std::string Y("y : ");
@@ -110,6 +112,10 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
         autodraw(input,dis+to_string(distance),20,250);
 
     }
+
+
+    thread s2(&Serial::send,&s,msg);
+    s2.join();
 
     return armors_;
 }
