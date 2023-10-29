@@ -37,6 +37,21 @@ Detector::Detector(
 //{
 //}
 
+void Detector::Thread(){
+    Serial s;
+    s.open();
+
+    thread s1(&Serial::recieve,&s);
+    detect_color = (s.re_color=='R')?0:1;
+    speed = s.re_speed;
+    s1.detach();
+
+    send_yaw = isnan(yaw) ? 0 : yaw;
+    send_pitch = isnan(new_pitch) ? 0 : new_pitch;
+    msg = s.data_send(send_yaw,send_pitch);
+    thread s2(&Serial::send,&s,msg);
+    s2.detach();
+}
 
 std::vector<Armor> Detector::detect(const cv::Mat & input)
 {
@@ -46,32 +61,25 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
     armors_ = matchLights(lights_);
 
 //--------------------数字识别--------------------------------------------------------------------------------------
+
     NumberClassifier q("../Detector/model/mlp.onnx","../Detector/model/label.txt",
                        0.7,std::vector<std::string>{"negative"});
     if (!armors_.empty()) {
         q.extractNumbers(input, armors_);
         q.classify(armors_);
     }
+
 //--------------------PNP解算---------------------------------------------------------------------------------------
     std::array<double, 9> camera_matrix {1572.4, 0.0, 655, 0.0, 1572.4, 503.4, 0.0, 0.0, 1.0};
     std::vector<double> dist_coeffs {-0.313818281448022, 0.106042483, 0, 0, 0};
     cv::Mat rvec ;          //旋转向量
     cv::Mat tvec ;          //平移向量
 
-    Serial s;
-    s.open();
-    thread s1(&Serial::recieve,&s);
-    s1.detach();
-    detect_color = (s.re_color=='R')?0:1;
-
-
     PnPSolver m(camera_matrix,dist_coeffs);
     for(const auto armors : armors_){
 
         m.solvePnP(armors,rvec,tvec);
-        double yaw;                // 侧航角（x/z）
-        double pitch;              // 俯仰角（y/z）
-        double distance;           // 距离
+
         double x = tvec.at<double>(0, 0), y = tvec.at<double>(1, 0), z = tvec.at<double>(2, 0);
         yaw = atan(x / z) * 180.0 / CV_PI;
         pitch = atan(-y / z) * 180.0 / CV_PI;
@@ -79,10 +87,9 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
 
 //----------------------弹道补偿-------------------------------------------------------------------------------
 
-        double new_pitch = increase(s.re_speed,pitch,distance);
+        new_pitch = increase(speed,pitch,distance);
 //        s.recieve();
 //        double  new_pitch = increase(20,pitch,distance);
-        double raise;
         if(new_pitch<0){
             raise = tan(abs(pitch)*CV_PI/180)*distance - tan(abs(new_pitch)*CV_PI/180)*distance;
         }
@@ -90,11 +97,6 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
 
         cout<<"Raise: "<<setprecision(3)<<raise<<"m"<<endl;
 
-//----------------------发送串口-------------------------------------------------------------------------------
-
-//        double SendYaw = yaw + s.re_yaw;
-//        double SendPitch = new_pitch + s.re_pitch;
-        msg = s.data_send(yaw,new_pitch);
 
 //---------------------for debug---------------------------------------------------------------------------------------
         std::string X("x : ");
@@ -112,10 +114,6 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
         autodraw(input,dis+to_string(distance),20,250);
 
     }
-
-
-    thread s2(&Serial::send,&s,msg);
-    s2.join();
 
     return armors_;
 }
@@ -156,7 +154,6 @@ std::vector<Light> Detector::findLights(const cv::Mat & rbg_img, const cv::Mat &
     cv::findContours(dst_img, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);  //只检测最外围轮廓   仅保存轮廓的拐点信息
 
     vector<Light> lights;
-//  this->debug_lights.data.clear();
 
     for (const auto & contour : contours) {
         if (contour.size() < 5) continue;

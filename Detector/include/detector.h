@@ -103,6 +103,7 @@ public:
     Detector(const int & bin_thres,const LightParams & l, const ArmorParams & a);
 //    Detector(const int & bin_thres,const int & color,const LightParams & l, const ArmorParams & a);
 
+    void Thread();
     std::vector<Armor> detect(const cv::Mat & input);
     cv::Mat preprocessImage(const cv::Mat & input);
     cv::Mat read_morphology(const cv::Mat & binary);
@@ -116,13 +117,26 @@ public:
     void autodraw(cv::Mat input, std::string text, int x,int y);
 
     int binary_thres;
-    int detect_color;
     cv::Mat binary_img;
     cv::Mat dst;
-    std::string msg;
-
     LightParams l;
     ArmorParams a;
+    double yaw;                // 侧航角（x/z）
+    double pitch;              // 俯仰角（y/z）
+    double new_pitch;          //弹道补偿后new_pitch
+    double distance;           // 距离
+    double raise;
+
+//==========recieve==============================
+
+    int detect_color;
+    double speed;
+
+//==========send=================================
+    double send_yaw,send_pitch;
+    std::string msg;
+
+
 
 private:
     bool isLight(const Light & possible_light);

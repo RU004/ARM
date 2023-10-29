@@ -47,23 +47,20 @@ void Serial::send(string data)
 void Serial::recieve()
 {
     sp_blocking_read(serPort,msg_recieve,25,0);
+    cout<<"Recieve: "<<msg_recieve<<endl;
 
     if(msg_recieve[0]=='A'||msg_recieve[24]=='E'){
-
         re_color = msg_recieve[1];
-
         if(msg_recieve[2]=='Y'){
            if(msg_recieve[3]=='-')
                re_yaw = -((msg_recieve[4]-'0')*100+(msg_recieve[5]-'0')*10+(msg_recieve[6]-'0')+(msg_recieve[8]-'0')*0.1+(msg_recieve[9]-'0')*0.01);
-            else re_yaw = (msg_recieve[4]-'0')*100+(msg_recieve[5]-'0')*10+(msg_recieve[6]-'0')+(msg_recieve[8]-'0')*0.1+(msg_recieve[9]-'0')*0.01;
+           else re_yaw = (msg_recieve[4]-'0')*100+(msg_recieve[5]-'0')*10+(msg_recieve[6]-'0')+(msg_recieve[8]-'0')*0.1+(msg_recieve[9]-'0')*0.01;
         }
-
         if(msg_recieve[10]=='P'){
             if(msg_recieve[11]=='-')
             re_pitch = -((msg_recieve[12]-'0')*100+(msg_recieve[13]-'0')*10+(msg_recieve[14]-'0')+(msg_recieve[16]-'0')*0.1+(msg_recieve[17]-'0')*0.01);
             else re_pitch = (msg_recieve[12]-'0')*100+(msg_recieve[13]-'0')*10+(msg_recieve[14]-'0')+(msg_recieve[16]-'0')*0.1+(msg_recieve[17]-'0')*0.01;
         }
-
         if(msg_recieve[18]=='S'){
             re_speed = (msg_recieve[19]-'0')*10+(msg_recieve[20]-'0')+(msg_recieve[22]-'0')*0.1+(msg_recieve[23]-'0')*0.01;
         }
