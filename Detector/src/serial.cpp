@@ -38,10 +38,7 @@ void Serial::data_send(double yaw,double pitch)
         else msg += "N";
         msg += "E";
         cout<<"Send: "<<msg<<endl;
-//        cout<<"-------------------------------------------"<<endl;
     }
-
-
 }
 
 
@@ -50,7 +47,6 @@ void Serial::send(string data)
 {
     while(true){
         sp_blocking_write(serPort,data.c_str(),19,0);
-
     }
 
 }

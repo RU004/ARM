@@ -43,6 +43,7 @@ int main() {
     p.Thread();
 
     while (1) {
+        namedWindow("image",cv::WINDOW_NORMAL);
         h.GetMat(img);
 
 //      cv::Mat img = cv::imread("/home/mry/RM/Detector/docs/22.jpg");

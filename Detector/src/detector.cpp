@@ -46,7 +46,8 @@ void Detector::Thread(){
     speed = s.re_speed;
     s1.detach();
 
-    s.data_send(send_yaw,send_pitch);
+    thread s2(&Serial::data_send,&s,send_yaw,send_pitch);
+    s2.detach();
 
     thread s3(&Serial::send,&s,s.msg);
     s3.detach();
