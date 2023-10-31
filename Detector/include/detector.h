@@ -132,9 +132,6 @@ public:
     int detect_color;
     double speed;
 
-//==========send=================================
-    double send_yaw,send_pitch;
-    std::string msg;
 
 
 

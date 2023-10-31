@@ -14,8 +14,8 @@ class Serial
 {
 public:
     bool open();
-    void data_send(double yaw,double pitch);
-    void send(string data);
+    void data_send(double &yaw,double &pitch);
+    void send(string &data);
     void recieve();
 
     struct sp_port *serPort;
@@ -23,6 +23,7 @@ public:
     char msg_recieve[25];
     char re_color;
     double re_yaw,re_pitch,re_speed;
+
 
 };
 

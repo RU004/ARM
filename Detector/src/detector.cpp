@@ -37,21 +37,7 @@ Detector::Detector(
 //{
 //}
 
-void Detector::Thread(){
-    Serial s;
-    s.open();
 
-    thread s1(&Serial::recieve,&s);
-    detect_color = (s.re_color=='R')?0:1;
-    speed = s.re_speed;
-    s1.detach();
-
-    thread s2(&Serial::data_send,&s,send_yaw,send_pitch);
-    s2.detach();
-
-    thread s3(&Serial::send,&s,s.msg);
-    s3.detach();
-}
 
 std::vector<Armor> Detector::detect(const cv::Mat & input)
 {
@@ -88,8 +74,8 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
 //----------------------弹道补偿-------------------------------------------------------------------------------
 
         new_pitch = increase(speed,pitch,distance);
-//        s.recieve();
-//        double  new_pitch = increase(20,pitch,distance);
+//        new_pitch = increase(20,pitch,distance);
+
         if(new_pitch<0){
             raise = tan(abs(pitch)*CV_PI/180)*distance - tan(abs(new_pitch)*CV_PI/180)*distance;
         }

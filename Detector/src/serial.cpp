@@ -20,7 +20,7 @@ bool Serial::open() {
     return true;
 }
 
-void Serial::data_send(double yaw,double pitch)
+void Serial::data_send(double & yaw,double & pitch)
 {
     while(true){
 
@@ -43,10 +43,10 @@ void Serial::data_send(double yaw,double pitch)
 
 
 
-void Serial::send(string data)
+void Serial::send(string & data)
 {
     while(true){
-        sp_blocking_write(serPort,data.c_str(),19,0);
+        sp_nonblocking_write(serPort,data.c_str(),19);
     }
 
 }

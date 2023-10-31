@@ -12,6 +12,15 @@ using namespace std;
 #include "hik_camera/hik_camera/include/HikCam.hpp"
 #include <thread>
 
+cv::Mat img;
+HikCam h;
+void getSrc(){
+    while(true){
+        h.GetMat(img);
+    }
+}
+
+
 int main() {
 
 //    cv::VideoCapture video;
@@ -21,13 +30,10 @@ int main() {
 //        return false;
 //    }
 
-    cv::Mat img;
-
 //    while (video.read(img)){
 //        if (img.empty())
 //            break;
 
-    HikCam h;
     h.StartDevice(0);
     h.SetResolution(1280,1024);
     h.SetPixelFormat(17301514);
@@ -40,8 +46,6 @@ int main() {
     Detector p(230, l, a);
 //    Detector p(230, 1, l, a);
 
-//    p.Thread();
-
     Serial s;
     s.open();
     thread s1(&Serial::recieve,&s);
@@ -49,14 +53,16 @@ int main() {
     p.speed = s.re_speed;
     s1.detach();
 
-    thread s2(&Serial::data_send,&s,p.send_yaw,p.send_pitch);
+    thread s2(&Serial::data_send,&s,ref(p.yaw),ref(p.new_pitch));
     s2.detach();
 
-    thread s3(&Serial::send,&s,s.msg);
+    thread s3(&Serial::send,&s,ref(s.msg));
     s3.detach();
 
-    while (1) {
-        namedWindow("image",cv::WINDOW_NORMAL);
+    thread src(getSrc);
+    src.detach();
+
+    while (true) {
         h.GetMat(img);
 
 //      cv::Mat img = cv::imread("/home/mry/RM/Detector/docs/22.jpg");
