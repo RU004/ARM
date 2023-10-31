@@ -45,16 +45,16 @@ void Serial::data_send(double & yaw,double & pitch)
 void Serial::send(string & data)
 {
     while(true){
-        sp_nonblocking_write(serPort,data.c_str(),19);
+        sp_blocking_write(serPort,data.c_str(),19,0);
     }
 
 }
-void Serial::recieve()
+void Serial::recieve(int &recolor,double &speed)
 {
     while(true){
         sp_nonblocking_read(serPort,msg_recieve,25);
         if(msg_recieve[0]=='A'||msg_recieve[24]=='E'){
-            re_color = msg_recieve[1];
+            re_color = (msg_recieve[1]=='R') ?0:1;
             if(msg_recieve[2]=='Y'){
                 if(msg_recieve[3]=='-')
                     re_yaw = -((msg_recieve[4]-'0')*100+(msg_recieve[5]-'0')*10+(msg_recieve[6]-'0')+(msg_recieve[8]-'0')*0.1+(msg_recieve[9]-'0')*0.01);

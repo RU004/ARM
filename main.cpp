@@ -49,9 +49,7 @@ int main() {
 
     Serial s;
     s.open();
-    thread s1(&Serial::recieve,&s);
-    p.detect_color = (s.re_color=='R')?0:1;
-    p.speed = s.re_speed;
+    thread s1(&Serial::recieve,&s,ref(p.detect_color),ref(p.speed));
     s1.detach();
 
     thread s2(&Serial::data_send,&s,ref(p.yaw),ref(p.new_pitch));

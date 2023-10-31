@@ -16,7 +16,7 @@ public:
     bool open();
     void data_send(double &yaw,double &pitch);
     void send(string &data);
-    void recieve();
+    void recieve(int &recolor,double &speed);
 
     struct sp_port *serPort;
     string msg;
