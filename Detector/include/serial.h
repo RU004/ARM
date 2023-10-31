@@ -14,7 +14,7 @@ class Serial
 {
 public:
     bool open();
-    std::string data_send(double yaw,double pitch);
+    void data_send(double yaw,double pitch);
     void send(string data);
     void recieve();
 

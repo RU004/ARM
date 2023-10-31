@@ -46,11 +46,10 @@ void Detector::Thread(){
     speed = s.re_speed;
     s1.detach();
 
-    send_yaw = isnan(yaw) ? 0 : yaw;
-    send_pitch = isnan(new_pitch) ? 0 : new_pitch;
-    msg = s.data_send(send_yaw,send_pitch);
-    thread s2(&Serial::send,&s,msg);
-    s2.detach();
+    s.data_send(send_yaw,send_pitch);
+
+    thread s3(&Serial::send,&s,s.msg);
+    s3.detach();
 }
 
 std::vector<Armor> Detector::detect(const cv::Mat & input)
