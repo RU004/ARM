@@ -40,7 +40,20 @@ int main() {
     Detector p(230, l, a);
 //    Detector p(230, 1, l, a);
 
-    p.Thread();
+//    p.Thread();
+
+    Serial s;
+    s.open();
+    thread s1(&Serial::recieve,&s);
+    p.detect_color = (s.re_color=='R')?0:1;
+    p.speed = s.re_speed;
+    s1.detach();
+
+    thread s2(&Serial::data_send,&s,p.send_yaw,p.send_pitch);
+    s2.detach();
+
+    thread s3(&Serial::send,&s,s.msg);
+    s3.detach();
 
     while (1) {
         namedWindow("image",cv::WINDOW_NORMAL);
