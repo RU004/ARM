@@ -11,6 +11,7 @@ using namespace std;
 #include "Detector/include/serial.h"
 #include "hik_camera/hik_camera/include/HikCam.hpp"
 #include <thread>
+#include <opencv2/highgui/highgui_c.h>
 
 cv::Mat img;
 HikCam h;
@@ -63,10 +64,8 @@ int main() {
     src.detach();
 
     while (true) {
-        h.GetMat(img);
-
+        cv::namedWindow("image", CV_WINDOW_NORMAL);
 //      cv::Mat img = cv::imread("/home/mry/RM/Detector/docs/22.jpg");
-
 
 //        cv::Mat binary = p.preprocessImage(img);
 //        cv::Mat dst = p.read_morphology(binary);

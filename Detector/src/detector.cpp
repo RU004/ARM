@@ -89,8 +89,9 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
         std::string Y("y : ");
         std::string Z("z : ");
         std::string yaw_("yaw     : ");
-        std::string pitch_("pitch    : ");
+        std::string pitch_("new_pitch    : ");
         std::string dis("distance : ");
+        std::string dis("raise : ");
 
         autodraw(input,X+to_string(x),20,50);
         autodraw(input,Y+to_string(y),20,90);
@@ -98,6 +99,7 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
         autodraw(input,yaw_+to_string(yaw),20,170);
         autodraw(input,pitch_+to_string(new_pitch),20,210);
         autodraw(input,dis+to_string(distance),20,250);
+        autodraw(input,dis+to_string(raise),20,290);
 
     }
 

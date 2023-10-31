@@ -37,7 +37,6 @@ void Serial::data_send(double & yaw,double & pitch)
         if(yaw < 5 && abs(pitch) < 5)msg += "F";
         else msg += "N";
         msg += "E";
-        cout<<"Send: "<<msg<<endl;
     }
 }
 
@@ -54,8 +53,6 @@ void Serial::recieve()
 {
     while(true){
         sp_nonblocking_read(serPort,msg_recieve,25);
-        cout<<"Recieve: "<<msg_recieve<<endl;
-
         if(msg_recieve[0]=='A'||msg_recieve[24]=='E'){
             re_color = msg_recieve[1];
             if(msg_recieve[2]=='Y'){
