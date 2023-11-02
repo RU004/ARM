@@ -21,8 +21,7 @@ public:
     struct sp_port *serPort;
     string msg;
     char msg_recieve[25];
-    char re_color;
-    double re_yaw,re_pitch,re_speed;
+    double re_yaw,re_pitch;
 
 
 };

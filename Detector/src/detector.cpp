@@ -54,6 +54,11 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
         q.extractNumbers(input, armors_);
         q.classify(armors_);
     }
+    if(armors_.empty()){
+        send_yaw = 0;
+        send_pitch = 0;
+    }
+
 
 //--------------------PNP解算---------------------------------------------------------------------------------------
     std::array<double, 9> camera_matrix {1572.4, 0.0, 655, 0.0, 1572.4, 503.4, 0.0, 0.0, 1.0};
@@ -83,6 +88,8 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
 
         cout<<"Raise: "<<setprecision(3)<<raise<<"m"<<endl;
 
+        send_yaw = yaw;
+        send_pitch = new_pitch;
 
 //---------------------for debug---------------------------------------------------------------------------------------
         std::string X("x : ");
@@ -323,7 +330,7 @@ double Detector::increase(double speed,double pitch,double distance)
     double tempPoint = tan(abs(pitch)*CV_PI/180)*distance; //临时目标点
     double dropH;
 
-    do
+    for(int i = 0;i<10;i++)
     {
         double time;
         double realPoint;
@@ -342,7 +349,7 @@ double Detector::increase(double speed,double pitch,double distance)
             angle = atan(tempPoint/distance)*180/CV_PI;
         }
 
-    }while(dropH>=0.0001);
+    }
 
     if(judge<0){
         return -angle;
