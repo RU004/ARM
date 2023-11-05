@@ -61,8 +61,10 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
 
 
 //--------------------PNP解算---------------------------------------------------------------------------------------
-    std::array<double, 9> camera_matrix {1572.4, 0.0, 655, 0.0, 1572.4, 503.4, 0.0, 0.0, 1.0};
-    std::vector<double> dist_coeffs {-0.313818281448022, 0.106042483, 0, 0, 0};
+//    std::array<double, 9> camera_matrix {1572.4, 0.0, 655, 0.0, 1572.4, 503.4, 0.0, 0.0, 1.0};
+//    std::vector<double> dist_coeffs {-0.313818281448022, 0.106042483, 0, 0, 0};
+    std::array<double, 9> camera_matrix {1869.074197, 0.0, 664.6998242, 0.0, 1867.898354, 518.0525069, 0.0, 0.0, 1.0};
+    std::vector<double> dist_coeffs {-0.16311607346, 0.255155351, 0, 0, 0};
     cv::Mat rvec ;          //旋转向量
     cv::Mat tvec ;          //平移向量
 
@@ -88,8 +90,13 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
 
         cout<<"Raise: "<<setprecision(3)<<raise<<"m"<<endl;
 
-        send_yaw = yaw;
-        send_pitch = new_pitch;
+//        send_yaw = yaw;
+//        send_pitch = new_pitch;
+
+        if(abs(yaw)<=2)send_yaw = 0;
+        else send_yaw = yaw;
+        if(abs(new_pitch)<=0)send_pitch = 0;
+        else send_pitch = new_pitch;
 
 //---------------------for debug---------------------------------------------------------------------------------------
         std::string X("x : ");
