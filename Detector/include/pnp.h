@@ -35,7 +35,7 @@ private:
     // Unit: mm
     static constexpr float SMALL_ARMOR_WIDTH = 135;
     static constexpr float SMALL_ARMOR_HEIGHT = 55;
-    static constexpr float LARGE_ARMOR_WIDTH = 230;
+    static constexpr float LARGE_ARMOR_WIDTH = 225;
     static constexpr float LARGE_ARMOR_HEIGHT = 55;
 
     // Four vertices of armor in 3d

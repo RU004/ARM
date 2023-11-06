@@ -18,6 +18,7 @@ using namespace std;
 #include <vector>
 #include <map>
 #include <string>
+#include <math.h>
 #include <thread>
 
 #include "../include/detector.h"
@@ -74,8 +75,8 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
         m.solvePnP(armors,rvec,tvec);
 
         double x = tvec.at<double>(0, 0), y = tvec.at<double>(1, 0), z = tvec.at<double>(2, 0);
-        yaw = atan(x / z) * 180.0 / CV_PI;
-        pitch = atan(-y / z) * 180.0 / CV_PI;
+        yaw = atan2(x , z) * 180.0 / CV_PI;
+        pitch = atan2(y, sqrt(x*x + z*z)) * 180.0 / CV_PI;
         distance = sqrt(x*x + y*y + z*z);
 
 //----------------------弹道补偿-------------------------------------------------------------------------------
@@ -95,7 +96,7 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
 
         if(abs(yaw)<=2)send_yaw = 0;
         else send_yaw = yaw;
-        if(abs(new_pitch)<=0)send_pitch = 0;
+        if(abs(new_pitch)<=2)send_pitch = 0;
         else send_pitch = new_pitch;
 
 //---------------------for debug---------------------------------------------------------------------------------------

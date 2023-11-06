@@ -52,7 +52,7 @@ int main() {
     thread s1(&Serial::recieve,&s,ref(p.detect_color),ref(p.speed));
     s1.detach();
 
-    thread s2(&Serial::data_send,&s,ref(p.yaw),ref(p.new_pitch));
+    thread s2(&Serial::data_send,&s,ref(p.send_yaw),ref(p.send_pitch));
     s2.detach();
 
     thread s3(&Serial::send,&s,ref(s.msg));
