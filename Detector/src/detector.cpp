@@ -76,11 +76,11 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
 
         double x = tvec.at<double>(0, 0), y = tvec.at<double>(1, 0), z = tvec.at<double>(2, 0);
         yaw = atan2(x , z) * 180.0 / CV_PI;
-        pitch = atan2(y, sqrt(x*x + z*z)) * 180.0 / CV_PI;
+        pitch = atan2(-y, sqrt(x*x + z*z)) * 180.0 / CV_PI;
         distance = sqrt(x*x + y*y + z*z);
 
 //----------------------弹道补偿-------------------------------------------------------------------------------
-
+        if(speed == 0) speed=30;
         new_pitch = increase(speed,pitch,distance);
 //        new_pitch = increase(20,pitch,distance);
 
@@ -338,7 +338,7 @@ double Detector::increase(double speed,double pitch,double distance)
     double tempPoint = tan(abs(pitch)*CV_PI/180)*distance; //临时目标点
     double dropH;
 
-    for(int i = 0;i<10;i++)
+    for(int i = 0;i<15;i++)
     {
         double time;
         double realPoint;
@@ -357,13 +357,14 @@ double Detector::increase(double speed,double pitch,double distance)
             angle = atan(tempPoint/distance)*180/CV_PI;
         }
 
+        if(abs(dropH)<0.1)break;
     }
 
     if(judge<0){
-        return -angle;
+        return -abs(angle);
     }
     else
-        return angle;
+        return abs(angle);
 }
 
 
