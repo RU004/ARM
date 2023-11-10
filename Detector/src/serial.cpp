@@ -23,16 +23,15 @@ bool Serial::open() {
 void Serial::data_send(double & yaw,double & pitch)
 {
     while(true){
-
         msg = "A";
         msg += "Y";
         if(yaw>0)msg += "+";
         else msg += "-";
-        msg += isnan(yaw) ? cv::format("%06.2d",0) : (cv::format("%06.2f",abs(yaw)));
+        msg += cv::format("%06.2f",abs(yaw));
         msg += "P";
         if(pitch>0)msg += "+";
         else msg += "-";
-        msg += isnan(pitch) ? cv::format("%06.2d",0) : (cv::format("%06.2f",abs(pitch)));
+        msg += cv::format("%06.2f",abs(pitch));
         if(abs(yaw)>0 && abs(yaw)<5 && abs(pitch)>0 && abs(pitch) < 5)msg += "F";
         else msg += "N";
         msg += "E";

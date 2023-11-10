@@ -127,9 +127,10 @@ public:
     double distance;           // 距离
     double raise;
 
+    double opt = 0,opt1;
 //==========recieve==============================
 
-    int detect_color;
+    int detect_color=0;
     double speed;
 
 //===========send================================

@@ -18,11 +18,8 @@ using namespace std;
 #include <vector>
 #include <map>
 #include <string>
-#include <math.h>
-#include <thread>
 
 #include "../include/detector.h"
-#include "../include/serial.h"
 #include "../include/pnp.h"
 #include "../include/classifier.h"
 
@@ -80,7 +77,7 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
         distance = sqrt(x*x + y*y + z*z);
 
 //----------------------弹道补偿-------------------------------------------------------------------------------
-        if(speed == 0) speed=30;
+        if(speed<1) speed=30;
         new_pitch = increase(speed,pitch,distance);
 //        new_pitch = increase(20,pitch,distance);
 
@@ -91,20 +88,32 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
 
         cout<<"Raise: "<<setprecision(3)<<raise<<"m"<<endl;
 
-//        send_yaw = yaw;
-//        send_pitch = new_pitch;
+        if(armors_.size()>1){
+            opt1 = (yaw+new_pitch)/2;
+            if(opt==0 || opt1<opt){
+                opt = opt1;
+                send_yaw = yaw;
+                send_pitch = new_pitch;
+            }
+        }
 
-        if(abs(yaw)<=2)send_yaw = 0;
-        else send_yaw = yaw;
-        if(abs(new_pitch)<=2)send_pitch = 0;
-        else send_pitch = new_pitch;
+        else{
+            send_yaw = yaw;
+            send_pitch = new_pitch;
+        }
+
+//        if(abs(yaw)<=2)send_yaw = 0;
+//        else send_yaw = yaw;
+//        if(abs(new_pitch)<=2)send_pitch = 0;
+//        else send_pitch = new_pitch;
 
 //---------------------for debug---------------------------------------------------------------------------------------
         std::string X("x : ");
         std::string Y("y : ");
         std::string Z("z : ");
         std::string yaw_("yaw     : ");
-        std::string pitch_("new_pitch    : ");
+        std::string pitch_("pitch   : ");
+        std::string new_pitch_("new_pitch    : ");
         std::string dis("distance : ");
         std::string raise_("raise : ");
 
@@ -112,9 +121,10 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
         autodraw(input,Y+to_string(y),20,90);
         autodraw(input,Z+to_string(z),20,130);
         autodraw(input,yaw_+to_string(yaw),20,170);
-        autodraw(input,pitch_+to_string(new_pitch),20,210);
-        autodraw(input,dis+to_string(distance),20,250);
-        autodraw(input,raise_+to_string(raise),20,290);
+        autodraw(input,pitch_+to_string(pitch),20,210);
+        autodraw(input,new_pitch_+to_string(new_pitch),20,250);
+        autodraw(input,dis+to_string(distance),20,290);
+        autodraw(input,raise_+to_string(raise),20,330);
 
     }
 

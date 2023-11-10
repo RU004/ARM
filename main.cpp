@@ -3,10 +3,9 @@
 //
 #include <iostream>
 using namespace std;
-#include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-
+#include <chrono>
 #include "Detector/include/detector.h"
 #include "Detector/include/serial.h"
 #include "hik_camera/hik_camera/include/HikCam.hpp"
@@ -38,8 +37,8 @@ int main() {
     h.StartDevice(0);
     h.SetResolution(1280,1024);
     h.SetPixelFormat(17301514);
-    h.SetExposureTime(5000);
-    h.SetFrameRate(120);
+    h.SetExposureTime(5000);  //曝光
+    h.SetFrameRate(120);    //帧率
     h.SetStreamOn();//开始取流
 
     Detector::LightParams l{0.1, 0.5, 45.0};
@@ -62,6 +61,7 @@ int main() {
     src.detach();
 
     while (true) {
+        auto start = std::chrono::high_resolution_clock::now();
         cv::namedWindow("image", CV_WINDOW_NORMAL);
 //      cv::Mat img = cv::imread("/home/mry/RM/Detector/docs/22.jpg");
 
@@ -74,9 +74,16 @@ int main() {
         p.getAllNumbersImage();
         p.drawResults(img);
 
-        imshow("image", img);
-        if (cv::waitKey(10) == 27)        //按下Esc建结束
-            break;
+//        imshow("image", img);
+//        if (cv::waitKey(10) == 27)        //按下Esc建结束
+//            break;
+
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> total = end - start;
+        cout << "fps：" << 1/total.count() << endl;
+        std::string fps("fps : ");
+        cv::putText(img, fps+to_string(1/total.count()), cv::Point2i(20, 370), cv::FONT_HERSHEY_SIMPLEX, 0.8,
+                    cv::Scalar(0, 255, 255), 2);
     }
 }
 
