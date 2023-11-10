@@ -86,7 +86,7 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
         }
         else raise = -(tan(abs(pitch)*CV_PI/180)*distance - tan(abs(new_pitch)*CV_PI/180)*distance);
 
-        cout<<"Raise: "<<setprecision(3)<<raise<<"m"<<endl;
+//        cout<<"Raise: "<<setprecision(3)<<raise<<"m"<<endl;
 
         if(armors_.size()>1){
             opt1 = (yaw+new_pitch)/2;

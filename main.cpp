@@ -74,13 +74,13 @@ int main() {
         p.getAllNumbersImage();
         p.drawResults(img);
 
-//        imshow("image", img);
-//        if (cv::waitKey(10) == 27)        //按下Esc建结束
-//            break;
+        imshow("image", img);
+        if (cv::waitKey(10) == 27)        //按下Esc建结束
+            break;
 
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> total = end - start;
-        cout << "fps：" << 1/total.count() << endl;
+//        cout << "fps：" << 1/total.count() << endl;
         std::string fps("fps : ");
         cv::putText(img, fps+to_string(1/total.count()), cv::Point2i(20, 370), cv::FONT_HERSHEY_SIMPLEX, 0.8,
                     cv::Scalar(0, 255, 255), 2);
