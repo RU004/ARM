@@ -17,11 +17,17 @@ PnPSolver::PnPSolver(
         : camera_matrix_(cv::Mat(3, 3, CV_64F, const_cast<double *>(camera_matrix.data())).clone()),
           dist_coeffs_(cv::Mat(1, 5, CV_64F, const_cast<double *>(dist_coeffs.data())).clone())
 {
+//    // Unit: m
+//    constexpr double small_half_y = SMALL_ARMOR_WIDTH / 2.0 / 1000.0;
+//    constexpr double small_half_z = SMALL_ARMOR_HEIGHT / 2.0 / 1000.0;
+//    constexpr double large_half_y = LARGE_ARMOR_WIDTH / 2.0 / 1000.0;
+//    constexpr double large_half_z = LARGE_ARMOR_HEIGHT / 2.0 / 1000.0;
+
     // Unit: m
     constexpr double small_half_y = SMALL_ARMOR_WIDTH / 2.0 / 1000.0;
-    constexpr double small_half_z = SMALL_ARMOR_HEIGHT / 2.0 / 1000.0;
+    constexpr double small_half_z = (SMALL_ARMOR_HEIGHT-47.5) / 2.0 / 1000.0;
     constexpr double large_half_y = LARGE_ARMOR_WIDTH / 2.0 / 1000.0;
-    constexpr double large_half_z = LARGE_ARMOR_HEIGHT / 2.0 / 1000.0;
+    constexpr double large_half_z = (LARGE_ARMOR_HEIGHT-47.5) / 2.0 / 1000.0;
 
     // Start from bottom left in clockwise order
     // Model coordinate: x forward, y left, z up
