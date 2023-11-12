@@ -20,50 +20,37 @@ void getSrc(){
     }
 }
 
-
 int main() {
-
-//    cv::VideoCapture video;
-//    video.open("../Detector/docs/666.avi");
-//    if (!video.isOpened()) {
-//        cout << "can't open video" << endl;
-//        return false;
-//    }
-
-//    while (video.read(img)){
-//        if (img.empty())
-//            break;
 
     h.StartDevice(0);
     h.SetResolution(1280,1024);
     h.SetPixelFormat(17301514);
-    h.SetExposureTime(5000);  //æ›å…‰
-    h.SetFrameRate(120);    //å¸§çŽ‡
-    h.SetStreamOn();//å¼€å§‹å–æµ
+    h.SetExposureTime(5000);  //ÆØ¹â
+    h.SetFrameRate(120);    //Ö¡ÂÊ
+    h.SetStreamOn();//¿ªÊ¼È¡Á÷
+
+    thread src(getSrc);
+    src.detach();
 
     Detector::LightParams l{0.1, 0.5, 45.0};
     Detector::ArmorParams a{0.7, 0.8, 3.2, 3.2, 5.5, 35.0};
     Detector p(230, l, a);
-//    Detector p(230, 1, l, a);
 
     Serial s;
     s.open();
     thread s1(&Serial::recieve,&s,ref(p.detect_color),ref(p.speed));
     s1.detach();
 
-    thread s2(&Serial::data_send,&s,ref(p.send_yaw),ref(p.send_pitch));
+    thread s2(&Serial::data_send,&s,ref(p.send_yaw),ref(p.send_pitch),ref(p.pitch));
     s2.detach();
 
     thread s3(&Serial::send,&s,ref(s.msg));
     s3.detach();
 
-    thread src(getSrc);
-    src.detach();
 
     while (true) {
-        auto start = std::chrono::high_resolution_clock::now();
-        cv::namedWindow("image", CV_WINDOW_NORMAL);
-//      cv::Mat img = cv::imread("/home/mry/RM/Detector/docs/22.jpg");
+//        auto start = std::chrono::high_resolution_clock::now();
+        cv::namedWindow("image", CV_WINDOW_AUTOSIZE);
 
 //        cv::Mat binary = p.preprocessImage(img);
 //        cv::Mat dst = p.read_morphology(binary);
@@ -75,15 +62,15 @@ int main() {
         p.drawResults(img);
 
         imshow("image", img);
-        if (cv::waitKey(10) == 27)        //æŒ‰ä¸‹Escå»ºç»“æŸ
+        if (cv::waitKey(10) == 27)        //°´ÏÂEsc½¨½áÊø
             break;
 
-        auto end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> total = end - start;
-//        cout << "fpsï¼š" << 1/total.count() << endl;
-        std::string fps("fps : ");
-        cv::putText(img, fps+to_string(1/total.count()), cv::Point2i(20, 370), cv::FONT_HERSHEY_SIMPLEX, 0.8,
-                    cv::Scalar(0, 255, 255), 2);
+//        auto end = std::chrono::high_resolution_clock::now();
+//        std::chrono::duration<double> total = end - start;
+//        cout << "fps£º" << 1/total.count() << endl;
+//        std::string fps("fps : ");
+//        cv::putText(img, fps+to_string(1/total.count()), cv::Point2i(20, 370), cv::FONT_HERSHEY_SIMPLEX, 0.8,
+//                    cv::Scalar(0, 255, 255), 2);
     }
 }
 

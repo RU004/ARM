@@ -20,7 +20,7 @@ bool Serial::open() {
     return true;
 }
 
-void Serial::data_send(double & yaw,double & pitch)
+void Serial::data_send(double & yaw,double &new_pitch,double & pitch)
 {
     while(true){
         msg = "A";
@@ -29,9 +29,9 @@ void Serial::data_send(double & yaw,double & pitch)
         else msg += "-";
         msg += cv::format("%06.2f",abs(yaw));
         msg += "P";
-        if(pitch>0)msg += "+";
+        if(new_pitch>0)msg += "+";
         else msg += "-";
-        msg += cv::format("%06.2f",abs(pitch));
+        msg += cv::format("%06.2f",abs(new_pitch));
         if(abs(yaw)>0 && abs(yaw)<5 && abs(pitch)>0 && abs(pitch) < 5)msg += "F";
         else msg += "N";
         msg += "E";

@@ -5,7 +5,20 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(OpenCV REQUIRED )
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-add_executable(autoaim main.cpp hik_camera/hik_camera/HikCam.cpp Detector/src/detector.cpp Detector/include/detector.h Detector/include/serial.h Detector/src/serial.cpp Detector/src/classifier.cpp Detector/include/classifier.h Detector/src/serial.cpp Detector/include/classifier.h Detector/include/pnp.h Detector/src/pnp.cpp Detector/src/pnp.cpp)
+add_executable(autoaim
+        hik_camera/hik_camera/HikCam.cpp
+        Detector/src/detector.cpp
+        Detector/include/detector.h
+        Detector/include/serial.h
+        Detector/src/serial.cpp
+        Detector/src/classifier.cpp
+        Detector/include/classifier.h
+        Detector/src/serial.cpp
+        Detector/include/classifier.h
+        Detector/include/pnp.h
+        Detector/src/pnp.cpp
+        Detector/src/pnp.cpp
+        debuger.cpp)
 
 target_link_libraries(autoaim ${OpenCV_LIBS})
 #包含海康相机动态链接库

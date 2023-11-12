@@ -101,9 +101,7 @@ public:
     };
 
     Detector(const int & bin_thres,const LightParams & l, const ArmorParams & a);
-//    Detector(const int & bin_thres,const int & color,const LightParams & l, const ArmorParams & a);
 
-    void Thread();
     std::vector<Armor> detect(const cv::Mat & input);
     cv::Mat preprocessImage(const cv::Mat & input);
     cv::Mat read_morphology(const cv::Mat & binary);
@@ -130,7 +128,7 @@ public:
     double opt = 0,opt1;
 //==========recieve==============================
 
-    int detect_color=0;
+    int detect_color=1;
     double speed;
 
 //===========send================================

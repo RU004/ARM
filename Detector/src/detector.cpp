@@ -29,13 +29,6 @@ Detector::Detector(
 {
 }
 
-//Detector::Detector(
-//        const int & bin_thres, const int & color, const LightParams & l, const ArmorParams & a)
-//        : binary_thres(bin_thres), detect_color(color), l(l), a(a)
-//{
-//}
-
-
 
 std::vector<Armor> Detector::detect(const cv::Mat & input)
 {
@@ -74,16 +67,17 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
 //                                        0, 1871.363, 482.91847,
 //                                        0.0, 0.0, 1.0};
 //    std::vector<double> dist_coeffs {-0.17274, 0.313088, 0, 0, 0};
-//    //老海康
-//    std::array<double, 9> camera_matrix {1572.4, 0, 655,
-//                                         0.0, 1572.4, 503.4,
-//                                         0.0, 0.0, 1.0};
-//    std::vector<double> dist_coeffs {-0.313818281448022, 0.106042483, 0, 0, 0};
-    //变焦镜头（小焦段）
-    std::array<double, 9> camera_matrix {1016.808471, 0, 645.1676831,
-                                         0.0, 1016.554536, 508.7050056,
+    //老海康
+    std::array<double, 9> camera_matrix {1572.4, 0, 655,
+                                         0.0, 1572.4, 503.4,
                                          0.0, 0.0, 1.0};
-    std::vector<double> dist_coeffs {-0.392676910576646, 0.203662234, 0, 0, 0};
+    std::vector<double> dist_coeffs {-0.313818281448022, 0.106042483, 0, 0, 0};
+//    //变焦镜头（小焦段）
+//    std::array<double, 9> camera_matrix {1016.808471, 0, 645.1676831,
+//                                         0.0, 1016.554536, 508.7050056,
+//                                         0.0, 0.0, 1.0};
+//    std::vector<double> dist_coeffs {-0.392676910576646, 0.203662234, 0, 0, -0.0395421280802953};
+
     cv::Mat rvec ;          //旋转向量
     cv::Mat tvec ;          //平移向量
 
@@ -91,7 +85,7 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
     for(const auto armors : armors_){
 
         m.solvePnP(armors,rvec,tvec);
-
+cout<<tvec<<endl;
         double x = tvec.at<double>(0, 0), y = tvec.at<double>(1, 0), z = tvec.at<double>(2, 0);
         yaw = atan2(x , z) * 180.0 / CV_PI;
         pitch = atan2(-y, sqrt(x*x + z*z)) * 180.0 / CV_PI;
@@ -145,7 +139,7 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
         autodraw(input,pitch_+to_string(pitch),20,210);
         autodraw(input,new_pitch_+to_string(new_pitch),20,250);
         autodraw(input,dis+to_string(distance),20,290);
-        autodraw(input,raise_+to_string(raise),20,330);
+        autodraw(input,raise_+to_string(raise*100),20,330);
 
     }
 

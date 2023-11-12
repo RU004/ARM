@@ -25,9 +25,9 @@ PnPSolver::PnPSolver(
 
     // Unit: m
     constexpr double small_half_y = SMALL_ARMOR_WIDTH / 2.0 / 1000.0;
-    constexpr double small_half_z = (SMALL_ARMOR_HEIGHT-47.5) / 2.0 / 1000.0;
+    constexpr double small_half_z = (SMALL_ARMOR_HEIGHT+47.5)  / 1000.0;
     constexpr double large_half_y = LARGE_ARMOR_WIDTH / 2.0 / 1000.0;
-    constexpr double large_half_z = (LARGE_ARMOR_HEIGHT-47.5) / 2.0 / 1000.0;
+    constexpr double large_half_z = (LARGE_ARMOR_HEIGHT+47.5) / 1000.0;
 
     // Start from bottom left in clockwise order
     // Model coordinate: x forward, y left, z up
