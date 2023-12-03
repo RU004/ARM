@@ -1,0 +1,3 @@
+/home/nexte/Desktop/ARM/build/CMakeFiles/autoaim.dir
+/home/nexte/Desktop/ARM/build/CMakeFiles/edit_cache.dir
+/home/nexte/Desktop/ARM/build/CMakeFiles/rebuild_cache.dir
