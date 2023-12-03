@@ -18,7 +18,8 @@ add_executable(autoaim
         Detector/include/pnp.h
         Detector/src/pnp.cpp
         Detector/src/pnp.cpp
-        debuger.cpp)
+        main.cpp
+)
 
 target_link_libraries(autoaim ${OpenCV_LIBS})
 #包含海康相机动态链接库

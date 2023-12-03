@@ -8,7 +8,7 @@ using namespace std;
 #include <chrono>
 #include "Detector/include/detector.h"
 #include "Detector/include/serial.h"
-#include "hik_camera/hik_camera/include/HikCam.hpp"
+#include "hik_camera/include/HikCam.hpp"
 #include <thread>
 #include <opencv2/highgui/highgui_c.h>
 
@@ -25,9 +25,9 @@ int main() {
     h.StartDevice(0);
     h.SetResolution(1280,1024);
     h.SetPixelFormat(17301514);
-    h.SetExposureTime(5000);  //曝光
-    h.SetFrameRate(120);    //帧率
-    h.SetStreamOn();//开始取流
+    h.SetExposureTime(5000);  //???
+    h.SetFrameRate(120);    //???
+    h.SetStreamOn();//??????
 
     thread src(getSrc);
     src.detach();
@@ -62,12 +62,12 @@ int main() {
         p.drawResults(img);
 
         imshow("image", img);
-        if (cv::waitKey(10) == 27)        //按下Esc建结束
+        if (cv::waitKey(10) == 27)        //????Esc??????
             break;
 
 //        auto end = std::chrono::high_resolution_clock::now();
 //        std::chrono::duration<double> total = end - start;
-//        cout << "fps：" << 1/total.count() << endl;
+//        cout << "fps??" << 1/total.count() << endl;
 //        std::string fps("fps : ");
 //        cv::putText(img, fps+to_string(1/total.count()), cv::Point2i(20, 370), cv::FONT_HERSHEY_SIMPLEX, 0.8,
 //                    cv::Scalar(0, 255, 255), 2);

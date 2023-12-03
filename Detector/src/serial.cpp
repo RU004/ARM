@@ -35,6 +35,7 @@ void Serial::data_send(double & yaw,double &new_pitch,double & pitch)
         if(abs(yaw)>0 && abs(yaw)<5 && abs(pitch)>0 && abs(pitch) < 5)msg += "F";
         else msg += "N";
         msg += "E";
+        cout<<msg[17]<<endl;
     }
 }
 
