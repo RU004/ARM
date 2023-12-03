@@ -6,7 +6,7 @@ find_package(OpenCV REQUIRED )
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 add_executable(autoaim
-        hik_camera/hik_camera/HikCam.cpp
+        hik_camera/HikCam.cpp
         Detector/src/detector.cpp
         Detector/include/detector.h
         Detector/include/serial.h
