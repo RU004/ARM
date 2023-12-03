@@ -17,7 +17,6 @@ add_executable(autoaim
         Detector/include/classifier.h
         Detector/include/pnp.h
         Detector/src/pnp.cpp
-        Detector/src/pnp.cpp
         main.cpp
 )
 
