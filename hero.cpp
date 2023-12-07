@@ -54,6 +54,8 @@ int main() {
         armor.getAllNumbersImage();
         armor.drawResults(img);
 
+        cout<<"send_yaw: "<< armor.send_yaw<<endl;
+        coue<<"send_pitch: "<< armor.send_pitch<<endl;
         visionMsg msg1 = {armor.send_yaw,armor.send_pitch};
         robotMsg msg2 = {1,false,0,0,20};
         usleep(10000);
@@ -62,7 +64,8 @@ int main() {
 
         armor.detect_color = msg2.foeColor;
         armor.speed = msg2.muzzleSpeed;
-
+        cout<<"color: "<< armor.detect_color<<endl;
+        cout<<"speed: "<< armor.speed<<endl;
 
         imshow("image", img);
         if (cv::waitKey(10) == 27)        //按下Esc建结束

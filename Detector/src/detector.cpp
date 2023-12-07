@@ -85,7 +85,7 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
     for(const auto armors : armors_){
 
         m.solvePnP(armors,rvec,tvec);
-cout<<tvec<<endl;
+
         double x = tvec.at<double>(0, 0), y = tvec.at<double>(1, 0), z = tvec.at<double>(2, 0);
         yaw = atan2(x , z) * 180.0 / CV_PI;
         pitch = atan2(-y, sqrt(x*x + z*z)) * 180.0 / CV_PI;
