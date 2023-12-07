@@ -17,8 +17,8 @@
 #include <iostream>
 #include <map>
 
-const int RED = 0;
-const int BLUE = 1;
+const int RED = 1;
+const int BLUE = 0;
 
 enum class ArmorType { SMALL, LARGE, INVALID };       //枚举类型
 const std::string ARMOR_TYPE_STR[3] = {"small", "large", "invalid"};
@@ -128,7 +128,7 @@ public:
     double opt = 0,opt1;
 //==========recieve==============================
 
-    int detect_color=1;
+    int detect_color=0;
     double speed;
 
 //===========send================================

@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
 project(autoaim)
-
 set(CMAKE_CXX_STANDARD 17)
+
 find_package(OpenCV REQUIRED )
 include_directories(${OpenCV_INCLUDE_DIRS})
+
+find_package(CSerialPort REQUIRED)
+include_directories(${CSerialPort_INCLUDE_DIR})
 
 add_executable(autoaim
         hik_camera/hik_camera/HikCam.cpp
@@ -17,12 +20,13 @@ add_executable(autoaim
         Detector/include/classifier.h
         Detector/include/pnp.h
         Detector/src/pnp.cpp
-        Detector/src/pnp.cpp
-        debuger.cpp)
+        visionSerial-main/include/packet.h
+        visionSerial-main/src/serial.cpp
+        hero.cpp
+)
 
-target_link_libraries(autoaim ${OpenCV_LIBS})
-#包含海康相机动态链接库
+
 find_library(MVS_LIB libMvCameraControl.so /opt/MVS/lib/64/)
-target_link_libraries(autoaim ${MVS_LIB} -lserialport)
+target_link_libraries(autoaim ${OpenCV_LIBS} ${MVS_LIB} -lserialport ${CSerialPort_LIBRARY} -pthread )
 
-SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
+
