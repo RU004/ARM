@@ -57,21 +57,21 @@ std::vector<Armor> Detector::detect(const cv::Mat & input)
 //                                         0.0, 1867.898354, 518.0525069,
 //                                         0.0, 0.0, 1.0};
 //    std::vector<double> dist_coeffs {-0.163116073466183, 0.255155351, 0, 0, 0};
-//    //二号
-//    std::array<double, 9> camera_matrix {1870.83826, 0.0, 654.97005,
-//                                         0.0, 1869.7689, 528.98147,
-//                                         0.0, 0.0, 1.0};
-//    std::vector<double> dist_coeffs {-0.15855, 0.205852, 0, 0, 0};
+    //二号
+    std::array<double, 9> camera_matrix {1870.83826, 0.0, 654.97005,
+                                         0.0, 1869.7689, 528.98147,
+                                         0.0, 0.0, 1.0};
+    std::vector<double> dist_coeffs {-0.15855, 0.205852, 0, 0, 0};
 //    //三号--英雄
 //    std::array<double, 9> camera_matrix {1872.40491, 0.0, 677.77858,
 //                                        0, 1871.363, 482.91847,
 //                                        0.0, 0.0, 1.0};
 //    std::vector<double> dist_coeffs {-0.17274, 0.313088, 0, 0, 0};
-    //老海康
-    std::array<double, 9> camera_matrix {1572.4, 0, 655,
-                                         0.0, 1572.4, 503.4,
-                                         0.0, 0.0, 1.0};
-    std::vector<double> dist_coeffs {-0.313818281448022, 0.106042483, 0, 0, 0};
+//    //老海康
+//    std::array<double, 9> camera_matrix {1572.4, 0, 655,
+//                                         0.0, 1572.4, 503.4,
+//                                         0.0, 0.0, 1.0};
+//    std::vector<double> dist_coeffs {-0.313818281448022, 0.106042483, 0, 0, 0};
 //    //变焦镜头（小焦段）
 //    std::array<double, 9> camera_matrix {1016.808471, 0, 645.1676831,
 //                                         0.0, 1016.554536, 508.7050056,

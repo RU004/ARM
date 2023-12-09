@@ -6,9 +6,7 @@ using namespace std;
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include "Detector/include/detector.h"
-#include "Detector/include/serial.h"
 #include "hik_camera/hik_camera/include/HikCam.hpp"
-#include <thread>
 #include <opencv2/highgui/highgui_c.h>
 
 int main() {

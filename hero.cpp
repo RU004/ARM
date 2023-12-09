@@ -1,15 +1,11 @@
 //
 // Created by mry on 23-12-7.
 //
-//
-// Created by mry on 23-7-6.
-//
 #include <iostream>
 using namespace std;
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/highgui/highgui_c.h>
-#include <chrono>
 #include <thread>
 #include "hik_camera/hik_camera/include/HikCam.hpp"
 #include "Detector/include/detector.h"
@@ -30,7 +26,7 @@ int main() {
     cam.StartDevice(0);
     cam.SetResolution(1280,1024);
     cam.SetPixelFormat(17301514);
-    cam.SetExposureTime(5000);  //曝光
+    cam.SetExposureTime(4000);  //曝光
     cam.SetFrameRate(120);    //帧率
     cam.SetStreamOn();//开始取流
 
@@ -56,8 +52,8 @@ int main() {
 
         cout<<"send_yaw: "<< armor.send_yaw<<endl;
         cout<<"send_pitch: "<< armor.send_pitch<<endl;
-        visionMsg msg1 = {armor.send_yaw,armor.send_pitch};
-        robotMsg msg2 = {1,false,0,0,20};
+        visionMsg msg1 = {0xa5,armor.send_yaw,armor.send_pitch};
+        robotMsg msg2 = {0xa5,0x00,0,0,20};
         usleep(10000);
         Serial.visionUpdate(&msg1);     // 更新自瞄数据
         Serial.robotUpdate(&msg2);      // 更新机器人数据
