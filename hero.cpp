@@ -55,7 +55,7 @@ int main() {
         armor.drawResults(img);
 
         cout<<"send_yaw: "<< armor.send_yaw<<endl;
-        coue<<"send_pitch: "<< armor.send_pitch<<endl;
+        cout<<"send_pitch: "<< armor.send_pitch<<endl;
         visionMsg msg1 = {armor.send_yaw,armor.send_pitch};
         robotMsg msg2 = {1,false,0,0,20};
         usleep(10000);
